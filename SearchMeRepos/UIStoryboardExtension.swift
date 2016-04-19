@@ -7,3 +7,15 @@
 //
 
 import Foundation
+import UIKit
+
+extension UIStoryboard {
+    convenience init(storyboardName: String, bundle: NSBundle? = nil) {
+        self.init(name: storyboardName, bundle: bundle)
+    }
+
+    class func storyboard(name: String, bundle: NSBundle? = nil) -> UIStoryboard{
+        return UIStoryboard(name: name, bundle: bundle)
+    }
+}
+

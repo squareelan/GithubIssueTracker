@@ -8,28 +8,35 @@
 
 import UIKit
 
+private let cellIdentifier = "issueCell"
+
 class IssueListViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	var repo: GithubRepo?
+	var issueList: [GithubIssue]?
+	
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		navigationController?.navigationBar.hidden = false
+		title = repo?.name
+	}
+}
 
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+extension IssueListViewController: UITableViewDataSource {
+	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return issueList?.count ?? 0
+	}
+	
+	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)
+		
+		guard let unwarpedCell = cell else {
+			// better to return empty cell than crash
+			print("Error: UITableViewCell identifier mismatch.")
+			return UITableViewCell()
+		}
+		
+		unwarpedCell.textLabel?.text = issueList?[indexPath.row].title
+		return unwarpedCell
+	}
 }

@@ -13,11 +13,12 @@ protocol Identifiable {
     static var identifier: String { get }
 }
 
-extension Identifiable where Self: UIViewController, Self: UITableViewCell {
+extension Identifiable where Self: UIViewController {
     static var identifier: String {
         return String(self)
     }
 }
 
 extension UIViewController: Identifiable {}
-extension UITableViewCell: Identifiable {}
+
+

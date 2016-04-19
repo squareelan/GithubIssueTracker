@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import OAuthSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -41,6 +42,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
 
-
+	func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+		// if url is matching with OAuth2, handle it accordingly
+		if url.host == "com.squareelan.gitissues" {
+			OAuthSwift.handleOpenURL(url)
+		}
+		return true
+	}
 }
 
