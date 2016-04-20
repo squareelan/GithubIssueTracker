@@ -1,4 +1,4 @@
-// TODO: Error handling//
+//
 //  SearchRepoViewController.swift
 //  SearchMeRepos
 //
@@ -11,22 +11,23 @@ import UIKit
 private let segueIdentifier = "repoListSegue"
 
 class SearchRepoViewController: UIViewController {
-	
+
 	@IBOutlet private(set) var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet private(set) var userIdTextField: UITextField!
 	private var userName: String?
 	private var repos: [GithubRepo]?
-	
+
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		navigationController?.navigationBar.hidden = true
 	}
-	
+
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == segueIdentifier {
-			let destination = segue.destinationViewController as! RepoListViewController
-			destination.repoList = repos
-			destination.userName = userName
+			if let destination = segue.destinationViewController as? RepoListViewController {
+				destination.repoList = repos
+				destination.userName = userName
+			}
 		}
 	}
 
@@ -34,7 +35,7 @@ class SearchRepoViewController: UIViewController {
 		guard let userName = userName else {
 			return
 		}
-		
+
         startNetworkActivityIndicator(activityIndicator: self.activityIndicator, userInteractionEnabled: false)
 		GithubAPIManager.sharedInstance.fetchUserRepos(userName) { (result) in
             self.stoptNetworkActivityIndicator(activityIndicator: self.activityIndicator)
@@ -50,7 +51,7 @@ class SearchRepoViewController: UIViewController {
 					})
 					alert.addAction(action)
 					self.presentViewController(alert, animated: true, completion: nil)
-					
+
 				default:
 					// just show alert with error message.
 					let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .Alert)
@@ -58,7 +59,7 @@ class SearchRepoViewController: UIViewController {
 					alert.addAction(action)
 					self.presentViewController(alert, animated: true, completion: nil)
 				}
-				
+
 			case .Success(let repos):
 				// save repository list and move to the next view
 				self.repos = repos
@@ -73,7 +74,7 @@ extension SearchRepoViewController: UITextFieldDelegate {
 		textField.resignFirstResponder()
 		return true
 	}
-	
+
 	func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
 		// update userName
 		if let currentText = textField.text as NSString? {

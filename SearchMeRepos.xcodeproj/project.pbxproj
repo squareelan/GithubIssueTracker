@@ -18,6 +18,7 @@
 		3C489CA21CC5F4B3007AF0EF /* RepoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C489CA11CC5F4B3007AF0EF /* RepoListViewController.swift */; };
 		3C489CA41CC5F6EB007AF0EF /* GithubIssue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C489CA31CC5F6EB007AF0EF /* GithubIssue.swift */; };
 		3C489CA61CC5FB2D007AF0EF /* IssueListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C489CA51CC5FB2D007AF0EF /* IssueListViewController.swift */; };
+		3C9A13D81CC80FDD006B27FC /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 3C9A13D71CC80FDD006B27FC /* .swiftlint.yml */; };
 		CCFE99D81CC6DF9B00135681 /* IdentifiableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFE99D71CC6DF9B00135681 /* IdentifiableExtension.swift */; };
 		CCFE99DA1CC6E1AA00135681 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFE99D91CC6E1AA00135681 /* UIStoryboardExtension.swift */; };
 		CCFE99DD1CC6EA2800135681 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFE99DC1CC6EA2800135681 /* UIViewControllerExtension.swift */; };
@@ -39,6 +40,7 @@
 		3C489CA11CC5F4B3007AF0EF /* RepoListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepoListViewController.swift; sourceTree = "<group>"; };
 		3C489CA31CC5F6EB007AF0EF /* GithubIssue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubIssue.swift; sourceTree = "<group>"; };
 		3C489CA51CC5FB2D007AF0EF /* IssueListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueListViewController.swift; sourceTree = "<group>"; };
+		3C9A13D71CC80FDD006B27FC /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		B5BBE340ED0EC3AEEE906978 /* Pods-SearchMeRepos.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SearchMeRepos.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SearchMeRepos/Pods-SearchMeRepos.debug.xcconfig"; sourceTree = "<group>"; };
 		CCFE99D71CC6DF9B00135681 /* IdentifiableExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifiableExtension.swift; sourceTree = "<group>"; };
 		CCFE99D91CC6E1AA00135681 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
@@ -88,12 +90,21 @@
 				3C489C8D1CC59169007AF0EF /* Main.storyboard */,
 				3C489C901CC59169007AF0EF /* Assets.xcassets */,
 				3C489C921CC59169007AF0EF /* LaunchScreen.storyboard */,
-				3C489C951CC59169007AF0EF /* Info.plist */,
 				3C489C9D1CC5E217007AF0EF /* GithubRepo.swift */,
 				3C489CA31CC5F6EB007AF0EF /* GithubIssue.swift */,
 				CCFE99DB1CC6E89200135681 /* Extensions+Protocols */,
+				3C9A13D91CC80FE0006B27FC /* Configuration */,
 			);
 			path = SearchMeRepos;
+			sourceTree = "<group>";
+		};
+		3C9A13D91CC80FE0006B27FC /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				3C489C951CC59169007AF0EF /* Info.plist */,
+				3C9A13D71CC80FDD006B27FC /* .swiftlint.yml */,
+			);
+			name = Configuration;
 			sourceTree = "<group>";
 		};
 		CCFE99DB1CC6E89200135681 /* Extensions+Protocols */ = {
@@ -136,6 +147,7 @@
 				3C489C841CC59169007AF0EF /* Resources */,
 				34A418F57105A301F2F805AE /* Embed Pods Frameworks */,
 				F825EE6AC3607DFBA230B6E0 /* Copy Pods Resources */,
+				3C268EBE1CC80EB6007BC15D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -185,6 +197,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C9A13D81CC80FDD006B27FC /* .swiftlint.yml in Resources */,
 				3C489C941CC59169007AF0EF /* LaunchScreen.storyboard in Resources */,
 				3C489C911CC59169007AF0EF /* Assets.xcassets in Resources */,
 				3C489C8F1CC59169007AF0EF /* Main.storyboard in Resources */,
@@ -208,6 +221,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SearchMeRepos/Pods-SearchMeRepos-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		3C268EBE1CC80EB6007BC15D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		4D45A80A786B39EA7FD7D32F /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

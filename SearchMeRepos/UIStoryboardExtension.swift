@@ -14,8 +14,7 @@ extension UIStoryboard {
         self.init(name: storyboardName, bundle: bundle)
     }
 
-    class func storyboard(name: String, bundle: NSBundle? = nil) -> UIStoryboard{
+    class func storyboard(name: String, bundle: NSBundle? = nil) -> UIStoryboard {
         return UIStoryboard(name: name, bundle: bundle)
     }
 }
-

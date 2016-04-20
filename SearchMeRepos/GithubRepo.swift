@@ -9,14 +9,14 @@
 import ObjectMapper
 
 struct GithubRepo: Mappable {
-	
+
 	// only serialize and deserialize needed fields for now.
 	var name: String?
-	
+
 	init?(_ map: Map) {
-		
+
 	}
-	
+
 	mutating func mapping(map: Map) {
 		name		<- map["name"]
 	}

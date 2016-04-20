@@ -11,14 +11,14 @@ import UIKit
 private let segueIdentifier = "authenticateSegue"
 
 class AuthenticateViewController: UIViewController {
-	
+
 	@IBOutlet private(set) var activityIndicator: UIActivityIndicatorView!
-	
+
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		navigationController?.navigationBar.hidden = true
 	}
-	
+
 	@IBAction private func authenticate(button: UIButton) {
 		// if token is available move on to next view
 		if GithubAPIManager.sharedInstance.hasOAuthToken {
@@ -33,7 +33,7 @@ class AuthenticateViewController: UIViewController {
 					// present static error message
 					let alert = UIAlertController(title: "Error", message: "Unfortunately authentication failed", preferredStyle: .Alert)
 					let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
-					
+
 					alert.addAction(action)
 					self.presentViewController(alert, animated: true, completion: nil)
 				} else {
@@ -44,4 +44,3 @@ class AuthenticateViewController: UIViewController {
 		}
 	}
 }
-

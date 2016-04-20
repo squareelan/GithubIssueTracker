@@ -24,7 +24,9 @@ enum ErrorCase: Int {
 	case NoResults = -6004 // ObjectMapper failed to serialize error (used as no results came back error)
 }
 
-let GithubAPIErrorDomain = "GithubAPIErrorDomain"
+struct GithubErrorDomain {
+	static let GithubAPIErrorDomain = "GithubAPIErrorDomain"
+}
 
 struct Constants {
 	static let AcceptHeader = "application/vnd.github.v3+json"
@@ -41,10 +43,10 @@ struct Constants {
 typealias GithubOAuthRequestHandler = ((Bool, NSError?) -> ())
 
 class GithubAPIManager: NSObject {
-	
+
 	// singleton object
 	static let sharedInstance = GithubAPIManager()
-	
+
 	private var OAuthCallbackHandler: GithubOAuthRequestHandler?
 	private var OAuthToken: String? {
 		get {
@@ -55,7 +57,7 @@ class GithubAPIManager: NSObject {
 				return nil
 			}
 		}
-	
+
 		set {
 			if let value = newValue {
 				// store the token in keychain
@@ -80,7 +82,7 @@ class GithubAPIManager: NSObject {
 			}
 		}
 	}
-	
+
 	var hasOAuthToken: Bool {
 		get {
 			if OAuthToken != nil {
@@ -89,12 +91,12 @@ class GithubAPIManager: NSObject {
 			return false
 		}
 	}
-	
+
 	override init() {
 		super.init()
 		addHeader("Accept", value: Constants.AcceptHeader)
 	}
-	
+
 	private func addHeader(key: String, value: String) {
 		let manager = Alamofire.Manager.sharedInstance
 		if var headers = manager.session.configuration.HTTPAdditionalHeaders as? Dictionary<String, String> {
@@ -106,7 +108,7 @@ class GithubAPIManager: NSObject {
 			manager.session.configuration.HTTPAdditionalHeaders = [key: value]
 		}
 	}
-	
+
 	private func removeHeader(key: String) {
 		let manager = Alamofire.Manager.sharedInstance
 		if var headers = manager.session.configuration.HTTPAdditionalHeaders as? Dictionary<String, String> {
@@ -114,19 +116,19 @@ class GithubAPIManager: NSObject {
 			manager.session.configuration.HTTPAdditionalHeaders = headers
 		}
 	}
-	
-	
+
+
 	// MARK: - Requests
-	
+
 	func doOAuthLogin(scope: String, callback: GithubOAuthRequestHandler) {
 		let oauthswift = OAuth2Swift(consumerKey: Constants.clientId, consumerSecret: Constants.clientSecret, authorizeUrl: Constants.authorizeUrl, accessTokenUrl: Constants.accessTokenUrl, responseType: Constants.tokenKey)
-		
+
 		guard let callbackUrl = NSURL(string: Constants.callbackUrl) else {
 			print("OAuth Error: Invalid callback url is provided")
-			callback(false, NSError(domain: GithubAPIErrorDomain, code: ErrorCase.InvalidRequest.rawValue, userInfo: nil))
+			callback(false, NSError(domain: GithubErrorDomain.GithubAPIErrorDomain, code: ErrorCase.InvalidRequest.rawValue, userInfo: nil))
 			return
 		}
-		
+
 		oauthswift.authorizeWithCallbackURL(callbackUrl, scope: scope, state: Constants.state, success: { (credential, response, parameters) in
 				print("Github token: \(credential.oauth_token)")
 				self.OAuthToken = credential.oauth_token
@@ -136,14 +138,14 @@ class GithubAPIManager: NSObject {
 				callback(false, error)
 		}
 	}
-	
-	
+
+
 	func fetchUserRepos(userName: String, callback: Result<[GithubRepo]> -> ()) {
 		guard OAuthToken != nil else {
 			callback(.Error("Missing or invalid Authorization Token", ErrorCase.InvalidToken.rawValue))
 			return
 		}
-		
+
 		let urlEncodedUsername = userName.stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) ?? ""
 		let url = "https://api.github.com/users/\(urlEncodedUsername)/repos"
 
@@ -161,23 +163,23 @@ class GithubAPIManager: NSObject {
 				}
 				return
 			}
-			
+
 			guard let value = response.result.value else {
 				callback(.Error("No response is found", ErrorCase.NoResponse.rawValue))
 				return
 			}
- 
+
 			print(response.result.value)
 			callback(.Success(value))
 		}
 	}
-	
+
 	func fetchIssues(userName: String, repositoryName: String, callback: Result<[GithubIssue]> -> ()) {
 		guard OAuthToken != nil else {
 			callback(.Error("Missing or invalid Authorization Token", ErrorCase.InvalidToken.rawValue))
 			return
 		}
-		
+
 		let urlEncodedUsername = userName.stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) ?? ""
 		let urlEncodedRepositoryName = repositoryName.stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) ?? ""
 		let url = "https://api.github.com/repos/\(urlEncodedUsername)/\(urlEncodedRepositoryName)/issues"
@@ -196,7 +198,7 @@ class GithubAPIManager: NSObject {
 				}
 				return
 			}
-			
+
 			guard let value = response.result.value else {
 				callback(.Error("No response is found", ErrorCase.NoResponse.rawValue))
 				return

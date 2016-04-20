@@ -20,5 +20,3 @@ extension Identifiable where Self: UIViewController {
 }
 
 extension UIViewController: Identifiable {}
-
-
