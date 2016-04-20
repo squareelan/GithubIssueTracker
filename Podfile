@@ -8,5 +8,6 @@ target 'SearchMeRepos' do
 	pod 'ObjectMapper'
 	pod 'OAuthSwift'
 	pod 'Locksmith'
+    pod 'COSTouchVisualizer'
 end
 

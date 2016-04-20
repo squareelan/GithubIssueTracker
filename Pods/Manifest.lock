@@ -3,6 +3,7 @@ PODS:
   - AlamofireObjectMapper (3.0.0):
     - Alamofire (~> 3.2)
     - ObjectMapper (~> 1.0)
+  - COSTouchVisualizer (1.0.6)
   - Locksmith (2.0.8)
   - OAuthSwift (0.5.2)
   - ObjectMapper (1.2.0)
@@ -10,6 +11,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - AlamofireObjectMapper
+  - COSTouchVisualizer
   - Locksmith
   - OAuthSwift
   - ObjectMapper
@@ -17,8 +19,9 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
   AlamofireObjectMapper: 2d16585d06177be0116d76de73497e77437798af
+  COSTouchVisualizer: a398089327a6c02897823614d7447ccc97198997
   Locksmith: a8ed41ac4c06506ea8cb199d8ec8a8d3d108eb2a
   OAuthSwift: 1ef042d4362e755e24a78f158d817245641a5d24
   ObjectMapper: b1e9c7c8a9f6400b72690c80072c131504caa66f
 
-COCOAPODS: 0.39.0
+COCOAPODS: 0.38.2

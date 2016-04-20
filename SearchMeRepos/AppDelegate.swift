@@ -8,12 +8,16 @@
 
 import UIKit
 import OAuthSwift
+import COSTouchVisualizer
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, COSTouchVisualizerWindowDelegate {
 
-	var window: UIWindow?
-
+        lazy var window: UIWindow? = {
+    var customWindow = COSTouchVisualizerWindow(frame: UIScreen.mainScreen().bounds)
+    customWindow.touchVisualizerWindowDelegate = self
+    return customWindow
+    }()
 
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
@@ -49,4 +53,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		}
 		return true
 	}
+
+    func touchVisualizerWindowShouldShowFingertip(window: COSTouchVisualizerWindow!) -> Bool {
+        return true
+    }
+
+    func touchVisualizerWindowShouldAlwaysShowFingertip(window: COSTouchVisualizerWindow!) -> Bool {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
+    }
 }
